@@ -1,0 +1,215 @@
+
+# bogl
+
+# quick hack at a boggle solver.  scales well with larger matrices than standard 4x4 boggle matrix.
+#
+
+
+$ ./bogl -size 128
+loaded trie in 286.432601ms
++--------------------------------------------------------------------------------------------------------------------------------+
+|cfijipfizhjatkpusconxkxabtvwlrzfeupsngbuhureekwhkrhcaxbevyijnbbguzzunlwklbqccdlotxqgbbuygstsfvkmxgkwzobqeqipirrvheijahjsynytzrny|
+|kbkyabkzjqxngkipbilqzdpicnoskodyunhnsmsjtcfafsokemirhfgotdcaldnzylnuhycteyltkpjxuwpjkcxjohwhskxrrdqpdiebjskcmeyjprogbyfmuqkymbqa|
+|tjgiooocwslqbxhuhkvjkuwkrmryrwquimynlmtpomgnqqcbbhhodrifrhrujbozkelhwkeembzicxfnjhmzzwvvkdwbsbyugeqbvliognmzudjkhdmxzdsezgekpzrx|
+|chbngqomujkmeondefnysihphuiggvbjnbpqkpgpgkmfaartlectnskuqvvalpszarbemljcfljrpyvkfjqiminczsgiybsoqsqkekhdljokogtqtigopdiljlssmrmc|
+|kvphgvpzwnsosrkthcwylpyxrxczuflcvwupijbrsajexboqvmhsekdltzrdwzxeqoobkyhnwdfmtdlxpidylhrdgtwsfomjtrtxrffvdteqnhxrzwtpmsomhcmatwln|
+|hwwbecyzysmlxljdollblhxkmfuaqfwhdfbdmpvuryynlujxgfktsgophzerbnmqaxackqlokamfudkbdlacmxeirffiicyhlpjtlzixvyhouhqwwejrovujqcbabrhn|
+|fcxzaimcnrozldbrqunyopjjcyngufrievzezolcxcspodcgzngfufupbriequuiwndmblmpefefhwknwgxszsmbdgdsokghhwttmzmpwtkyrpluvqcernryjwsvpdef|
+|fxkeeiicbqrervxmxombsnjqhrpxomltjatknsmjolozxxvhprfbahlfyqbsokpsdzhfgcuxewbbxkxwwpvcfcvmvrncfnbokgajvdlbreujywgdmbocdvoptgfqlysf|
+|zoxvhwlaweicasluriwnulfezlraofeelrzckytqunpdeprwuxfmpmtmxemrsjtvysxlrclfypeylknqrdbtpmwxbyyqzubvloogqrtjpyxvkadplfxekkzdnaseedrg|
+|qqilpvhkzscrzewztoqrqiudeutpdqcndlrzacbgvmeidcjdcmbgrevudkgtolhpakqwjicqzcjpcmbopwpvywrdzrwuxiaeuuszgdcvfjfkqrsrbwiorupyjoempxfl|
+|johaszpinttrkvxbljjpbwmucdwlppkorsmgefzqhmqneajkrnvnzrhnybxyidydoeqrlxmongujakfqbjjnhlocjcqfruzttreeebomoralvborpynewbavhferadjk|
+|klkwsxpxhhrhkilsvzxcskkidkwtowmsozatcfzajicaoofzucgttngemyeuvjjscvhoiduuoqlyjbfdhdoikbhoptayvgtjocctdjbsttvnsvwxvjynpqvlnwhuydkc|
+|uvixgggflxodjlfwfosijfeoyrlkcbqaaupquytrrfftwooifpurjbuwjuqybhrursxrrnsarslywqjlhcguocnfvvxgkuqehyfrkuokhretzdorbpeapjiqxisqraib|
+|jpcydpsxkziljucejsxbllkodwykqgdmltmpgesjaikkdbnfxqusgzcaajacxpjqollwknyxfjwqvzbuyzbuahjjuhxrdcjyvqoefunihslccrhnxgvtdzpfpmlzdvlc|
+|lolypqwsaufkykhpovezecamsuteptcghwndsoygsjgnwgshxrsnplcvknbddxvkdxqbxnzciphhptbtsbipngobpwedvcesboeatgkdyqmhdivdoqojpypsofdvkjti|
+|moylirbqfqvytakzphdepmfqzkasrhxqkamkzxcxvaiauxwfyujvcvgblqncefvgweuywxnsuauyfnjbrdphynkgdlbzuhloglxusshqqoqjzrvfytuhoqdrugmayrmw|
+|nacxyccypspznlxihsihnxwirfobwhfjmylmfywrcduefxwmlwgaebdnavicusrgjamwyqgyrfduaawtublftuypzqmgmcvwqayrxumaafbqqczkjvyqiaukwmbqjujx|
+|afhlhjriyvacmzsaxjijmconkwpwhkwbunawsjpxkmiwjcvgvrwbpoexvsgtvneegeovqrhptsmmhuxzxdfmjennaotnynpusubvzsnxhnxktylvgfmjfchkpraiqfgg|
+|amiblgbezhqsemxkmhsjydfdkswnrybnvsrvuoveuoxkcxedkotmwojtabuahpwrcaamutmmgoxnvcfrpgwrynyvncgjroeiiibdxqnzjedksvrmuucctageuwjrkukg|
+|izztfggpwfazzbdiotvyzmhbwaaebkkxyonhwofxfsfgsjepdfeoegmhvrrgbovwxctpiztfqhcmbtsuuwpeuhmywzqxyddmpxopdnvtewnnolpecvbtjflmhhgquspy|
+|xtqoijcflyuvgmnfdjinxukpxokwybuuqjhoimwcfgrcbaztrnapkhuypxpssnlkqiilfdhckqlwsfwwlzjqeykjsuqwfiysrsewwaoqqceuupxlcsprbwyfgahzuxfe|
+|ngjidsrljrapoghwerzfviuhkejwrqjnldrtpfmyhcwbgyegzjwgcvdeprasjqhusdwblrinmxikjcaguytbqempsranikqtzdixqmqmtzbfyrddyygdstbgrvvxxlpk|
+|tcutczevbsgstpzmptwgepjxaurpkmstlsfaghmghlbtrxauzwxttyzzrbusqsvsptjbixedonjjqfkusftqqpqxukzbcaoxjvbxzgelrknukeunckdcaefyinsvuwcv|
+|eupjgwbvvekkzydrtgshxpnrngrkgmalwgfuzjucxjufazhbwhvqjndzcoloslioobpwxpwolsdtoafbrviserxfjwpsfwjlitrykywixssbqmvhmuchlxopowdfpkoc|
+|tlhdszsgaxcqiecurytzcrgaptyhiqnyollehxvzhcgskdhpqaxbisfkfzkbwwksroldhqtgvgojdixzqqovgtmolufdcidhnjveauucvoihqrfsitiaujwdcdglxgal|
+|zkblrygnhcsvxwruiejcscxsslyezmlwaeualfryjydlqcjnlixkultoxnibnzsbtafrsydvegkffpxljesqvywcostzrvhshcgmmvfhwmngbospehaoiggipgqmuccg|
+|lgotozxxrkymdwspoqukavdkzarngqyuyocesnfvyxdkklziyhpdlwpntjspfbwhvaanoaebkjekuaaitasgwiykbteowvutcmmsunrngunzsduvbkrztjuvymgswllt|
+|mpuqhgpfofwzjybaiwdvlsxxpcuiouqjpuiuaxglibwrmjhdbtwkpeelklchmgbukpgysazmzmjsfipwozfiyyyolwdhekmefbpzmyvuibfvavmcbckfbaovnqzutdcr|
+|wjdbyfjdsmmrleezngwyhtyzmeaqzmljrdotbymqefufqossqhgiypsrsprkgvwhdqizchhmimnicajkcajnmesuxqpwujcuwafmgrqzjgknszpmtvlqkdnggfdxpgej|
+|inrazrldxfhrwebdulrejotxfygtwvturvzmmfzuedlarnujzfprpmltiohyzstxozzxfkizctvszuzmnvpaipebphxhbguoipnxgeogqdrddxgvirdhbmrnhggejlrp|
+|hvdxmubattcrzetpawwyptuitanbtgfxavarzmpdiymiizawoltktybalafncxgbuyvtdeyrdgxuyzlbpehtflszvzyilfguqttynjclfycvspbtmskgjleqcbutdtuq|
+|avagerzoflsojpodtxqeyreenpxouulyewbhhqqdhmjbuyfmvkeywmrdoksjvogwvnylegbsoxnaeunvhiztibfhokmrdmnnckmxjzvsgmjigcjenmmzqfcdikoiyuix|
+|stnfgjyzrdyvqrqvkdfvcqgllyaoybaeeiupzpgvvcvtkictzfdyrxbabofstvdixfniipulcqvflpciegdywuzohfcsabtkmsgharollhqmmpevcordtnlqpiqehdzu|
+|wblmeveivygmjxlmzjeyxxirdzwymfwsvewvofgosbaboehpanjnmzlptyjgnztcnbyksnmbjaxmjlaaujekpspkzsvejigykbkaktefovbkwgsjzwovlcxcrpiiebza|
+|cnbbgrajjvlhvsdidjkdusdhnzeznkqhukdnflqkfhscjznqbujfefsvdvkwchzllmejegfrgtsjsztozbnqxacbskxfscgjfjeqtzuvikwbztqtgjtvbvbjlzjjsupg|
+|reisslstretbdjcpgslfnhwqjcmlmsbhkuejewqoadwxazjnzczcghebntlmixbajwnwyrksqytevosfuajiwxfqefvdfdbcywpicqgxwuietalbvdgjsrasxnjyejhw|
+|gadvnehgrcrchkoumhoynyuqtdhiveraydvpmwmtfabiwdhypvgnonuevtbwrymsantuebxbkoetzlnoaymwojmqeudsfbznhnguavzwhshpzlzrpngihcnitkaufzax|
+|cbaunhsxmguwuuqpoufasvoujxwmygsavvcwuitbjhjxbpchoovdgfnytcwzyvkyihkavxsslefadougpdzhmjicdgcdkxjpjipqebiconuhdrrblexnhnkmzusumsvh|
+|fsyupygtvxpaenzimqqsxzwbhaieccodwlrhlabgttqquvglkdomibgolbfnrcbtzcwqhtvicydxfjimorlfyegrrswkvymqcbzuoqsvnrbznkldwstbodepvlsvzpsu|
+|buamuxnuqlpjtuqbsniezffxvxdwfvicbvfkgynuqdipnturdkmzyzjnmgpebkbirueodbaxksgvtrprjbdoxxheruqxwtvllzwtvffbhwjgnmmsjxocabttedyhzeac|
+|xsqcmyckpvrvwxgumfwfcwbunjlzxfnkfapojhtmcdhgtvikehtpgqsgmrxwvyyficotdqzfiwhbndgxwimpiinsxowjipgopsnzlgnyuixdxlvzxqznskjobvaxfelk|
+|jrigzdxmrztoaiqkqkircqeiorkgiimqplknizhpmzqeitjicpswvuototwqqnhchkhmxyvqguyopdcqwxdnsskwilnnuvquvjxsxqxtmntkumiliszopjaoydiiofmk|
+|nmtkkveddqdcwclrssvwiayxpnvrrgvobzhsfupnasjposnenhjdytmwuehrdemttvyasothtgycpnblliqwgofyadsuuklorxdepqdlqnobxkxugfmkajivbfpzglpt|
+|lrzlpwrdhtmwtmsynzeshitlpzmltccsnpasmxaiitqrpsvdidtjtqqajimlexmmkckiooqenqujbcsdwdnvscpteyryekxglzmangncjywjinxjjgpxycosqskyhdqm|
+|gpehpedqsjvxcjzquzoskwjsmsuhnxkfozjazlylqylqkjzhrhnfsmaiktsgjlgadmbfjfvtsenxesxvqhxzbokamupygsrbebkfwkbxwsapuchzvoefbrkruemojlxf|
+|wyuytuvkyinkxqyvbhigdiefuhpixttdbdtkljncjxbcqzbaazglaaqywfdbgxhnxxehqhonjhojzcxjemsetyctapoaoombxhjobrohuypsjwupqwqrstqbvuehsxgp|
+|wutawhtctjyvurmteynzcgyslpzlnjojcbnlshpsolglkrqjfsnctlhjyemhobfxqpzlxpfpwdfmutxqtdcqqmuwzbpbesckjmtkvhsnsqwlaujkuzauixiqltksysqk|
+|ydijcsenlgtdjxsloicuugqsribtpjlrqchduzrzotjhxafeltbzyqjphctxndnsxdfvbgnilnhdlgsqsjjfqaerubjwwovkdezjambmnoojminbbebtwvedghliwlok|
+|gsofqtbzxnovapcquqdpqpifngwdtgfyxojcpuknjgbapfpmmrzfpicttglmwixdituakhprjvpxvmkodgnapohyijenrlifizmswuepfubrlgizkyhfjgagfnxjlnbx|
+|jfcafgkzrymxdxzkumidvecqgdmersawzpnnzrbjxehfmmhcaqdksebeudtrzpbjixzymzqhjirozudijekgooxioaeqoilpopkfbmlcchmgoumzsmkftgrxtfzldhlo|
+|hwonemzocikeixoolmgqhjsagaouthdapyxvyheuncrvgsskmptcctokdzirpejmtxgbzfrxuiavjtzpabmmucllnncjxbdhlzgljlqdjheafffmewyoyvmqgfhocbpn|
+|byjapyzptmyibdwgrwkwlosjfdgbyixpauzgsduytmshaojtbchgzvnbmmgmyqzrrtbysmsuurrwokzvljrjxvrbbtdpgshcmuooavelqhgnpgvzxslelsfendberaoc|
+|bbrhelgfteowmjmwkjymfnchrwhzivsnuriixurgpndcboaymygowczzxwaolefvrlzvoegebsjxafgmqxqfyelyghrxjxdgkqgdgyejyblczatxarqzdurejfmaglgd|
+|cpbollixzhhxurodecgyksusxfbvsahfclzwgbgbevdbpjzaypwrwbdcizzkuituunweaekuxngusjpjpybmhutzjtdcjpjldqjzsiujzosgpfcbqwxmtdllocoxgpew|
+|rngmvpefjujntyfotemkoirajnwompuxwljlnvxmqjkhvngdsgzzywehitfunofrnwdhcjhdhmeplydzjeqvcidbkagmflvnjekurxsoiqmzxzoqtqhqmaymlnwhmcci|
+|yxmpgireibdvsbvsvxtekayoxiyzbfekbnffebroaydmqurjipavztotrjgaestkbgdifnenjoafpaxzstcxbpwrcfckxjxtkybrkikpoibgggybknpxokrbphrrqmxe|
+|xsfrpnehzjlpnrkfabuikkqttrgkfsqwkxfgxicoudjmaonigqvhgfzyhtbqbdsuygvaudhvpqhxclqfkacrckouhiqwqzbfablxjloxgyxuxtkgyktskufmkpswwsni|
+|jeaekggoarszvpaogenlsihodlspzawpextikqgzgifbejsxhtsekqcyyuyokvbbaptitffnvdngcxsudrfgcwtqtyriswfaqujqimpvajeycondxsznkhajvpfugpna|
+|pjkxbwmyzsihdqnwuulcvtqohbvgailetxgxmvfqgcnauxehxojmbtilhxgvbkzraspnrcqaoabqwffitxsogfqyzeonohhivsnxhgpyrsxjvxqwmpnbfanzmepmkuri|
+|tivgqhixxxyomdwfpjdzbrnrhimfoagqmmmqvblqahaendzhtxsysousamvkoazecuqmefgkpmtvnamwujhgjsstdtkcleirtqhmpvdduwtjjqqaykauqgandzjidjyq|
+|sdygrbvdiacvqabvspfmrsqehfuoaxcqexeqscgcdjikizkeayukmjohwlmlktqqhafwuoiwvldobamjfpqfalefhgssdukfdyqkckpshlvdgznilrbyiazlszffbnuc|
+|vrwlkjqidyqpaycyzppenphptyoatezwnkmzfkmdirfrqhgsqogqbkyuyteteqkakgucljnaryhvebiyoxoaglrrajjqpajwcupsmrivkvtirovrxhdbwykiomotmifv|
+|xtummzghvjaptwiilnjkyuawxiqorrddmlayuygnjvmxoutiikghnnscbusajozbalocwcfotcjrazzojhordwyfochmgqcbvrmtcnkezsnvktsgbodldvzwtctwmsgj|
+|iuopvqqipgazdivtqhgzeuxyhlutcbpdqofjherysvrnhbptvgbshxjojwguyyqdlgopzskpnycbqwpwqykceziagikrqykcgkdejqlopbavwliaigutmajrfzckjyeh|
+|dmyzcipnqrrbymraustnbhrhwtwpptakebzqpfesjtggpfqymutjsprliwzxcwnnapzvesrnaugerzrzmdfhjzrlqdlncartuhnivbcghtayohmvtaggluutkujpvpjx|
+|effxnmzehcpcvyyijcedblyoucrmuwzcuwfcnptskkcvuolwuiugvokzfkpxjsgsumsgfxqqzfbnvojbuoeyrbgcruegrmyloomwmvhoywakpvwjryrrwrgeofbtcwkw|
+|nwizdzfrjnqsrrqxymdbjdcqgwkxrimcjrwfwqjlfdpcrytphtdhbizheulwiaetscoidcmeieernznlwervwraiboqsmyxpvhqugphpwtsgjkldgesmcyxbryjtqslb|
+|iwbcgthfoyrxmqyukmoulioabafarxabtyhchicrtdvtownimlnjblukwsykmyrgqheyvfumtuicqebhjxxwchvmuvdniezrvjeboikwkswjoogouwnsrjwobtqcogap|
+|aziyvnqyzgtjurrfeprqxmpopqhqtjuddmbduwssqlabtgfedtubghrquqwhbdaacnanxmxrjesjkrbobpvaiourdlooruhtxvevenfsatqoeeztkrwtcazflslkamxs|
+|hfujujqiuyezbisavehuryhqcoywwzfzjjjtmexpxkewaiyohbhscatswgqywgpisculnducdzrouavnjwqssszggcmgucbfnownkbmdomyzmjmiwcofnpzgycgrgotc|
+|mazdikdhbfqmsadvawfeohoxlrdeddmltxvxnpfpvreffcnpuklvebakmxrrostwsrqgznxsmwdocznuavfwgdtowmyufunrkkobbphgevghhjrhfdwpzjdopnskxtji|
+|lhwtklleicxeivdfllmysuswdguncfblflmkzeepwhhmvmmcgcfflppzgoftvzauxxwpkjqporncjhlwokqyjmfmbnsjghbgjkzwozyqeacyyswlsekiwzenfwmsyolg|
+|jdevophtkwyvntzfoclapdxabbsfnmivfeudmjukuwuwjfmvjtvzelbbnzhojgwlayncerxlejhifwjotikkpweznfbrvdpntjwcmwevusyvmxcticaoqrezyomztdnw|
+|vjgtmudwbpqmtfaoegiebdbiwgkyilxiunamnrlcavsfgftdacmvzuxhcmxziegkxkyltsisuzejzwtklusapjodkzcpqgavelwlkavckhotrzhzlqgtwvsagfwzaeuh|
+|xcxxpvrezmvodxcuiswhwjkgacuvdferhkoaemiazvqnfjztsvxmvnpcnjeralnajiggbsosomavxypsnqfcrgxxqlcnwbzwqsmuvvdhhfuutaapjaqlmawrmyweaykx|
+|sebqfvictcwtehuhjjfnungsttiggnctgvoisbxqhcvnzvfydbkgrgfiqbsycvwgprenlhccfjuhjzlopwaawyizfnlcfjhgtjnemdqyfjdmluonitjofdwbkhwqbvmm|
+|kydgxbmqkqrslngakeklpevzuefqoftzrghhsobyxohdfrbsealxnlalqugzvjqketulotfwdqkdkyyhgusfhihupagajjeaxumvuaajupirjvhpybteauwhjalhhewg|
+|wgecwintojwglnttqogfbhxwdaqgacuxhwlmgtaldabqdpdxetfeeyblyivssolakaeyfvbccpwexgpfkshvgrgatskqkyyhayqouzvkqwbejfzmncoriqlnhqhoxjej|
+|bifxishzzdpdywamrwvccvlpdhpzwragmlqfdxyryzqfpjsetlhztjsnazeykhmiealvalpnsgqzaejbblpqiiwobapkhggwleuhaanhhkpjyodotublhegcmommwnnq|
+|cmcativxecntriyqdvtzrllacsawtypfdxuiysankeyogpuiopbcvetryfqareltptqcakfkrsdrstgwdantbepoazvyeidilmjnspwcfqlozfijrilmddspfyfhtlbi|
+|jbmjsgiuredhlfhikopxeqcyardrzudqfwmhmfaqaaoaakiqdmnmemweekdwqxslqjqwcjkxxgmpuaxvcqrsyynavpxrvpttzftmuvzgesudzoitcypjnxahmpdfrrnw|
+|xadwajfetwuteairrnmrottnuldkejtemxihvxirsmwmvuivbweesinsorfkznqseanvcxnpghzbxaumxlzqwyuqlebmwrzedhejcoxdzzhhlaeuzrumxsnadyyoqucq|
+|iewrieoxrhpixwjhbritjvtidnwxywhtkrmxvisfpzydxqcpjnttavgtklqbbbuiovcjozymcgoneqlfnfcboqxsnfulazjadknangyofkuxqxdlsukwkfncqwttxavu|
+|gtdugmpzhduvqjyjkfcwgsxhfxuhbqlouejmddjoukmepnmvsbqrqrmjtizfudswcwdfegqwefcfyfblogmvajacguvxrnrybbnuatyyvazuvwjcayjwwqpbycwcfdfk|
+|uvcuhafygeoefnesfkjsxbvocijjnlsaasvkfrimdifrrgvltxlpbkyvglxdobzpcucmkzxnjybqjjknsbjfmiqenhpkbfyxicqwhxkpxtohqkiwqvjtqqgzgjdwsvqj|
+|khdydmxodhywefsaiuhijesujmbnuiupubdegssunspriaonemxjlsgeftejtljncmqkorardnnztcyvutftdfpdlhnuzodbmueoehpuabozazhlmotdqvhsmyleerbw|
+|ckieuehhowotxqyhgzzvcwswrmoosyhittgmqnrdxdjhkjzsockukaitrewdkqlbuyiqezpyunulfuyahyjagyzdlimummztsovrmdginespgmocotvaudipewqogaev|
+|ofsebivyaepbnwlbzdagtlgibwlaxypgxngyhiswcaafggqkwzcrxflibjgqruauasolsmgoqarwhxxekpkdrbuspzgkbqzhqxonishziicfdyaogoqnjdpvtvjrsloc|
+|qxdyhajdfyfcuqowysbyygqarpclzrmafmhedstwdwupvvkwriqgxsrayvbbueidtdxnojbfvszscuvlzeufhtbocrsconftwmtqamyghansjrfhdbjtvhrkqxohcbnr|
+|wmdbrcplymnkvcmxucvwraddlykdfompybqngsysgdoujkmhkjtthaogeukbnhfbnnwmqjwkdsrzcbrrpkmgdanpzuwlsyjhlqnqppszbowmpttibygzuaotlkwxqapv|
+|plvzfbyepjmtrgztopjrtqerxjizoegrkpdspazuofovoyngwmfmltxggrqvezxyqwxuqomscovdccpwrphnjxdpehwdlgrywhkqkodrkrmpsnumuvjwmsksuyrhqqca|
+|cjqzipkrocgarcvdtjgobbyiqusybhfjxdszvhbatfjraepwohcwnhwkcvzbildhygbfwpjelyjtobjwuinspzzbgvhxzgwhwkqqrbyovpylidbiloxhcxztvmovnhas|
+|vjwqjnxstmsefhlmuucuetjbqvbfoubbnfdbdcexsqiszlkrhvuuumtrvxrpoogdgmcnhtsgplxwveofnjjiahkipngqptgftwqroudjojlrwzdrsahlzdrxhodmheqb|
+|adborhroopnnddptkvrpuaqlnsfdeziphswwzegubpputyvenujbvyxermhyegzlkhzeloofmrpjupujlhbyoqaabbgmxdviiamevhkapwgecngrmtgiqxfloiveaxva|
+|kdbfcbrizkhaiaokbrdgqatemfpfllkyzsgtebfmujwghfoslbmhdtresqcativwhumjlmlwfrkhjhykdmmwqymerninwlcfqkirkynzrdhazroxvenjjuobuzlaxdtn|
+|jvtzlazifxmulwmmogqnipoyfenumabhpjpiehtuakwkftyzhrihwdumdavadnztoakwqzqkxgcbnbutitfnywgjddygcwqzubjkobkrekbxrsjorqqqgvqcvhuhohwe|
+|vftepuxztyzvkrvjjocpnynudzoqnojptcyzvaegdwbdjujgjplyueflidjwmdpmecsdiehpvtcnfusikfdqjlgjjwparlautcexkorhslrqxizyctfpmwcdwvjxvcsb|
+|dyitonugrctmnjucldspogrvgxpbktztaqwzjcxgjedibdhrtasrpqpjiidodoysyxiyezmkyotuchgswxllzkzzzdtlifdvxkixxqkvatrelrqdumsdngoxlmogzzkq|
+|jonsvoptumeqhjomahgodpyrlbzeekcgriundbfalskifixuwwdnrxcfijlajedshvuifhexjqknltxbglkkbnqwxqyemavcmnmftbthwrzyahyenxixxfsgpirddhib|
+|qlpkrrkypsbqflwefrhlmhunzwcmvjfczzpeecdzosgaljffhmnmyxirtuuawdkycctcqdrjmrjcfrlvxmjrvsdjjkpsxvxqopzzmzsezmxgkxurdpasonqsbnoggnbh|
+|nmwxnibokkxwzybtjsxmwpbstqoifhfemndzqvzwypeogygnbzytlmmlgmamfyiryihurbojsjhevsvxjzlceykbggyyxizuizqchbmjxxokvikesqezghyygkjmmmwt|
+|gmyfzbovcsocanqrrbjkqyfvcyrpwuybjxvqquwqhdmkjprsjdqzrmlpwesxmofziomzcrfdcnntkwbnujrgauiogypggxvowfhxhqbwlfyecuyktihngeuadooizmqv|
+|kbrjxlubzfyploevkfeopftlxnyckasatuqblkbahnnqrmzbeyzflrvzzrdnujvfymwvlyjoezqlgxbfgqlwbgbavgqjgflenysjrurfnlziknucbrqvrfsamyesuaqe|
+|ongkdlkksrvpvlhvqmcsdejwhqtxjdhxmnmrrwvomoncktygnvkyfitvjhizlesfhylkdkukgxevfmstyslkhwxxlwqqdsyuakvkxltyjjowsdebgdtufegatqrwpjyx|
+|klolplelvkpctfrakyopjfcpyvhuvypgxejwthogejsduwwrodmmuqtmmzhnoqeptezmgewwmzxnkqdzxahmjbslduhxbhfoscpafcxmmvcshjbvykkoauplydweppsh|
+|phtirrdrqtpktdosemgrxrysyvgdngdfdzhvuuobiqwoqecqzarrpczcvmnllkpgffzrzuuttyrghyknwmyrubkbwqksicgbiyynlvucqbysgtkrykwljcjvycbmrsen|
+|adtjqdwpggbdmjejdbkfydbcpqkbqygzowatgojhdlprqznjsqmmrcyxfwqadqnsxwcvfynfrlgjhobaxasfschblahzzdmnbpmeyffrscmsofcpvyqffypubkxnscju|
+|proybbxzbltqtqszhpoeaosdiuhmwokmhckusgffsphmaqojwrvibvwlkaacvckqrrjknhjpquvzzimryycrysvhuzsogacbdcxdegldvshiesywomresxubslbjynsz|
+|eldokgtwlmfmipzullezumzfwqhoigplhqnnrtnkzwmqqlugubgjqgnwdweslrtotnbmxkcijvsidhrtysskalbjyljvvhomlonksyncmaebgrfworfvkdvenbwhtdnc|
+|vhvknwhudvqulruzzdgjrvokakyjjyfmegdvlzkeeijtdboioopwwkujaapiuihiooscmzjjjnskmwzlbeikfdvjsobkqtrebrhukclnbjjmuuuiolwwufzmzdvxqjad|
+|vvinyizesobupbgrzxctskipjzxtwyyhbkeduofugqwopvuoahhjpcwkcjpwuwmchvpuhkidyermowisysbmphhcmkkldkwrzsdjnyahrbpvhzsrpwtonubfswevbott|
+|uokolvlasfupggnfvjumomtorvwtkymtyeblkfdgxguhykyfoynxasaxhmjjyppryasqbeemomvdpzzdgfuybcvnuhcnmxrocqejmccyvohvajtavpyikchujkwhbejc|
+|lagofclteiqxoeuyvrfmkuwjeutxwcrxljiqdezakeaydlrwfecfyryztyhdqtwxqamoqcgucktvqutapyzhudlboanpagvodegmtlftouwsbcghedtywpewyyszcxnc|
+|hemlhbecbgpvgwvoxdzcuzsqzyaggcujtywuzswdmjgccduklqodxlrbshesrmymteigwowpylpqbendkfvevxksqkuohdbvlerhulzbjmdpehztukcwfbocjvyqviyz|
+|hynjhxjletgbirnxsbwezaoluttnfvpjnpvsnwgfzzefwxntdtunvyourlqrsvpspnaoijfzlfkdalcnlpxjtrphxzjkgqyqxznzptigsqufrhywmiybyeaovonvszji|
+|slgqmdkkpxphuxnokqodogmgotejtuydlmyhnfequqloeqvvbvlndhvkpwvjnzxtepcecxtjcjdmrkdqlnswdavpofjrfwzitvvjajaezladvwjwgfshwqzqxhfoorax|
+|xwwmckjolffwbwnmxxyncivqaochsaknymtyieocarzjmfbwqhpxuljcodnrfpmslifisxzlizjsdowkkoxnspgomknnijnopredlfltsozxrbpvjdmywmfnanpsijhl|
+|guadgxgmuvorjkxpowrhhlfelybgatwgozgfgwaqsiqvgpxpelwskbitskfmvafbakjgyidlfmpylujewanathwuixiilfmnuxacxhdzvdcrpcmymtyriszzdzsjgqff|
+|vdzrauvmcdkiuiboqmzvatldwpywjciisggvdyxvephfngdvsvrpxsyfnvggpqcmahrkitmuortsbeiidnfnjhcihgpebbnflxyekcbkiulxhxjhrmwgfasioldfugme|
+|nfvzuctgohvlpvelfckvduryynphoycpepnzsomrlybdsfiivoicwxfascvxmffvpumooshalpqxvvxulamhmyzybtihzxecqfqceetnrzedhywzfjboimqruapwmniy|
+|lmcnxnlwpqoxaelhcjqcbxfliapxhrbgevsbtveqmcbpjpstxkcjvbplanioepqzqpftyxxyqqbdcapjturpdkmmctihjeegfbbjxvwnomdsaqqlejncohudbnbeyrlj|
+|unmeltetznwpmvecmdfrlfehkbzabeqptnlcudfcxjgtxklndbefrzfadamlnhwybarwjktxqrbmadcradsjcwikqdjyichfqndshtluvqmttzotbhmapkkfmughzfek|
+|ymqknlcjclyvlkfolkhnpfjfhxfjzifnrnsonelkxaaburwagtwmlspoovknxweprynctaanqdfxrroevrhpnyycykzhvkfkoumulzzqsoecsmsvuexbelyudmloxlai|
+|ulgtdodztivrmemfhndkzlysqhwliqjgmgqqnaatbdtcfkpvcbaxlzlojpnjwlsyneiokumqvpytjzppkyhyycshitywvmiqxyfplwcwrmoawmppicjhobslhnaduwos|
+|kojfqcdvgpaamioayipphsnxlxkmcthwiyzyiyixuawahyesngvfpnenfijaazvofzwasegjoubuntxkyupxojsvpgbunbrbtygedavotojznhrkwexqrqliqhonvwvx|
+|qngtxjclzhevdpeytwueusbgpdzzgdfevmhckzmrkslymxcfbewubcoeojnfgmsuxekyshmcdoiqbnzxkcgwygypdztynuimdxfurdxuxflntzpxtcssvqfmatmsgobj|
+|ewefkwdsxpiapfmsvpwcgwfhwsbnkkgpdreyacseomllqfkkzdjbuskyagaefqeugryeachcgubdcpswvtbmkcmufubbzsevyrecltuujodoguqdmdowkogfnyzkkvwl|
+|xovkuddlkrljhrwcqpatlpysjjuctjeyxiboexislwdsqukbydewdjdkdjbgjukqzoyjtasgtsnhuzinywirlsesprdhdcvtiqwjnditayqiczcqajkhgsxoctrtefgc|
++--------------------------------------------------------------------------------------------------------------------------------+
+
+6542513 walks found 213228 words in 951.65522ms
+fi: [[1 0] [2 0]]
+fiji: [[1 0] [2 0] [3 0] [4 0]]
+fib: [[1 0] [2 0] [1 1]]
+if: [[2 0] [1 0]]
+iyo: [[2 0] [3 1] [4 2]]
+ji: [[3 0] [2 0]]
+jib: [[3 0] [2 0] [1 1]]
+ji: [[3 0] [4 0]]
+jib: [[3 0] [4 0] [5 1]]
+jiboa: [[3 0] [4 0] [5 1] [4 2] [4 1]]
+jiboa: [[3 0] [4 0] [5 1] [5 2] [4 1]]
+jap: [[3 0] [4 1] [5 0]]
+jay: [[3 0] [4 1] [3 1]]
+jab: [[3 0] [4 1] [5 1]]
+jain: [[3 0] [4 1] [3 2] [3 3]]
+jaob: [[3 0] [4 1] [4 2] [5 1]]
+jaob: [[3 0] [4 1] [5 2] [5 1]]
+iyo: [[4 0] [3 1] [4 2]]
+iao: [[4 0] [4 1] [4 2]]
+iao: [[4 0] [4 1] [5 2]]
+iba: [[4 0] [5 1] [4 1]]
+ibo: [[4 0] [5 1] [4 2]]
+ibo: [[4 0] [5 1] [5 2]]
+ibo: [[4 0] [5 1] [6 2]]
+pi: [[5 0] [4 0]]
+pia: [[5 0] [4 0] [4 1]]
+pa: [[5 0] [4 1]]
+pay: [[5 0] [4 1] [3 1]]
+paying: [[5 0] [4 1] [3 1] [3 2] [3 3] [2 2]]
+paying: [[5 0] [4 1] [3 1] [3 2] [3 3] [4 3]]
+....
+goff: [[116 127] [117 126] [118 125] [119 126]]
+gog: [[116 127] [117 126] [118 126]]
+gogo: [[116 127] [117 126] [118 126] [119 127]]
+gos: [[116 127] [117 126] [117 127]]
+so: [[117 127] [117 126]]
+sov: [[117 127] [117 126] [116 125]]
+sovkhose: [[117 127] [117 126] [116 125] [116 126] [115 127] [114 126] [114 125] [113 124]]
+sofia: [[117 127] [117 126] [118 125] [119 124] [120 125]]
+sok: [[117 127] [117 126] [116 126]]
+sog: [[117 127] [117 126] [118 126]]
+sog: [[117 127] [117 126] [116 127]]
+og: [[119 127] [118 126]]
+of: [[119 127] [119 126]]
+off: [[119 127] [119 126] [118 125]]
+on: [[119 127] [120 126]]
+ona: [[119 127] [120 126] [120 125]]
+onto: [[119 127] [120 126] [121 125] [122 124]]
+onym: [[119 127] [120 126] [121 126] [122 125]]
+ox: [[119 127] [118 127]]
+cyath: [[120 127] [121 126] [120 125] [121 125] [121 124]]
+cyathos: [[120 127] [121 126] [120 125] [121 125] [121 124] [122 124] [123 125]]
+cyan: [[120 127] [121 126] [120 125] [120 126]]
+cyton: [[120 127] [121 126] [121 125] [122 124] [121 123]]
+cyton: [[120 127] [121 126] [121 125] [122 124] [123 124]]
+cog: [[120 127] [119 127] [118 126]]
+cogman: [[120 127] [119 127] [118 126] [119 125] [120 125] [120 126]]
+coff: [[120 127] [119 127] [119 126] [118 125]]
+con: [[120 127] [119 127] [120 126]]
+conto: [[120 127] [119 127] [120 126] [121 125] [122 124]]
+cony: [[120 127] [119 127] [120 126] [121 126]]
+cox: [[120 127] [119 127] [118 127]]
+tyt: [[121 127] [121 126] [121 125]]
+tyto: [[121 127] [121 126] [121 125] [122 124]]
+try: [[121 127] [122 127] [121 126]]
+tryt: [[121 127] [122 127] [121 126] [121 125]]
+rynt: [[122 127] [121 126] [120 126] [121 125]]
+rynt: [[122 127] [121 126] [120 126] [121 127]]
+try: [[123 127] [122 127] [121 126]]
+tryt: [[123 127] [122 127] [121 126] [121 125]]
+tryt: [[123 127] [122 127] [121 126] [121 127]]
+te: [[123 127] [124 127]]
+fe: [[125 127] [124 127]]
+fet: [[125 127] [124 127] [123 127]]

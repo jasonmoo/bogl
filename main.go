@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"math/rand"
 	"strings"
@@ -189,13 +190,19 @@ const (
 	fullAlphabet = `abcdefghijklmnopqrstuvwxyz`
 )
 
+var (
+	size = flag.Int("size", 4, "matrix = size x size")
+)
+
 func main() {
+
+	flag.Parse()
 
 	start := time.Now()
 	trie := LoadTrie("/usr/share/dict/words")
 	fmt.Println("loaded trie in", time.Since(start))
 
-	m := NewMatrix(128, 128)
+	m := NewMatrix(*size, *size)
 	m.Randomize(fullAlphabet + fullAlphabet)
 	fmt.Println(m)
 
