@@ -13,7 +13,7 @@ type (
 
 	TrieNode struct {
 		char rune
-		eow  bool
+		word string
 		next map[rune]*TrieNode
 	}
 )
@@ -67,7 +67,7 @@ func (t Trie) AddWord(word string) {
 		node = next
 	}
 
-	node.eow = true
+	node.word = word
 
 }
 

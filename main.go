@@ -20,36 +20,21 @@ type (
 		walks int
 	}
 
-	Rune struct {
-		x, y int
-		c    rune
+	Word struct {
+		ps []point
+		w  string
 	}
-
-	RuneSet []Rune
+	point struct {
+		x, y int
+	}
 )
 
-func (rs RuneSet) String() string {
-	var (
-		ps    [][2]int
-		runes []rune
-	)
-	for _, r := range rs {
-		ps = append(ps, [2]int{r.x, r.y})
-		runes = append(runes, r.c)
-	}
-	return fmt.Sprintf("%s: %v", string(runes), ps)
+func (p point) String() string {
+	return fmt.Sprintf("%d:%d", p.x, p.y)
 }
 
-func (rs *RuneSet) Push(x, y int, c rune) {
-	*rs = append(*rs, Rune{x: x, y: y, c: c})
-}
-
-func (rs *RuneSet) Pop() {
-	*rs = (*rs)[:len(*rs)-1]
-}
-
-func init() {
-	rand.Seed(time.Now().UnixNano())
+func (w Word) String() string {
+	return fmt.Sprintf("%s: %v", w.w, w.ps)
 }
 
 func NewMatrix(x, y int) *Matrix {
@@ -75,13 +60,13 @@ func (m *Matrix) Randomize(chars string) {
 	}
 }
 
-func (m *Matrix) FindWords(trie Trie) []string {
+func (m *Matrix) FindWords(trie Trie) []Word {
 
 	var (
 		node *TrieNode
 
-		words []string
-		runes = make(RuneSet, 0)
+		words []Word
+		word  Word
 
 		walk func(x, y int)
 	)
@@ -117,11 +102,12 @@ func (m *Matrix) FindWords(trie Trie) []string {
 			node = n
 		}
 
-		runes.Push(x, y, c)
-		defer runes.Pop()
+		word.ps = append(word.ps, point{x, y})
+		defer func() { word.ps = word.ps[:len(word.ps)-1] }()
 
-		if node.eow {
-			words = append(words, runes.String())
+		if node.word != "" {
+			word.w = node.word
+			words = append(words, word)
 		}
 
 		// if row above
@@ -197,6 +183,8 @@ var (
 func main() {
 
 	flag.Parse()
+
+	rand.Seed(time.Now().UnixNano())
 
 	start := time.Now()
 	trie := LoadTrie("/usr/share/dict/words")
